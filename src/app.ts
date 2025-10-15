@@ -2,6 +2,8 @@ import express from "express";
 import AppError from "./utils/appError";
 import globalErrorHandler from "./middlewares/errorHandler";
 import { successResponse } from "./utils/response";
+// import db from "./drizzle/db";
+
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.get("/", (_, res) => {
 app.get("/api/v1", (_, res) => {
   successResponse(res, "Welcome to VesselTracka API v1.0 🚀", null, 200);
 });
+
+
 
 app.use((req, _res, next) => {
   next(new AppError(`Can't find ${req.originalUrl}`, 404));
