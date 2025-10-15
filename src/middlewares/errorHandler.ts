@@ -68,24 +68,30 @@
 
 // export default globalErrorHandler;
 
-import { Response } from "express";
-import { errorResponse } from "../utils/response.js";
+import { NextFunction, Response, Request } from "express";
 import AppError from "../utils/appError.js";
+import { sendError } from "../utils/response.js";
 
-const globalErrorHandler = (err: unknown, res: Response) => {
+const globalErrorHandler = (
+  err: unknown,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  console.log("GLOBAL ERROR HANDLER TRIGGERED");
   console.error("💥 Error:", err);
 
   // Ensure we always have an AppError shape
   if (err instanceof AppError) {
-    return errorResponse(res, err.message, err.statusCode);
+    return sendError(res, err.message, err, err.statusCode);
   }
 
   // Fallback for unknown or unexpected errors
-  return errorResponse(
+  return sendError(
     res,
     "Internal Server Error",
-    500,
-    process.env.NODE_ENV === "development" ? err : undefined
+    process.env.NODE_ENV === "development" ? err : undefined,
+    500
   );
 };
 

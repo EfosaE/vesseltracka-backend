@@ -1,39 +1,46 @@
 import { Response } from "express";
 
-interface SuccessResponse<T = unknown> {
-  status: "success";
+export interface ApiSuccessResponse<T = unknown> {
+  success: true;
   message: string;
   data?: T;
+  meta?: Record<string, any>;
+  timestamp?: string;
 }
 
-interface ErrorResponse<E = unknown> {
-  status: "error";
+export interface ApiErrorResponse<E = unknown> {
+  success: false;
   message: string;
   error?: E;
+  timestamp?: string;
 }
 
-export function successResponse<T>(
+export function sendSuccess<T>(
   res: Response,
-  message = "Success",
+  message = "Request successful",
   data?: T,
+  meta?: Record<string, any>,
   statusCode = 200
-): Response<SuccessResponse<T>> {
+): Response<ApiSuccessResponse<T>> {
   return res.status(statusCode).json({
-    status: "success",
+    success: true,
     message,
     ...(data && { data }),
+    ...(meta && { meta }),
+    timestamp: new Date().toISOString(),
   });
 }
 
-export function errorResponse<E>(
+export function sendError<E>(
   res: Response,
-  message = "An error occurred",
-  statusCode = 500,
-  error?: E
-): Response<ErrorResponse<E>> {
+  message = "An unexpected error occurred",
+  error?: E,
+  statusCode = 500
+): Response<ApiErrorResponse<E>> {
   return res.status(statusCode).json({
-    status: "error",
+    success: false,
     message,
     ...(error && { error }),
+    timestamp: new Date().toISOString(),
   });
 }

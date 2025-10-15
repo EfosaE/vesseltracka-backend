@@ -1,8 +1,9 @@
 import express from "express";
 import AppError from "./utils/appError";
 import globalErrorHandler from "./middlewares/errorHandler";
-import { successResponse } from "./utils/response";
-// import db from "./drizzle/db";
+import firstTimerRoutes from "./firstTimers/firstTimer.route";
+import { sendSuccess } from "./utils/response";
+
 
 
 const app = express();
@@ -16,13 +17,14 @@ app.get("/", (_, res) => {
 
 // ✅ /api/v1 route
 app.get("/api/v1", (_, res) => {
-  successResponse(res, "Welcome to VesselTracka API v1.0 🚀", null, 200);
+  sendSuccess(res, "Welcome to VesselTracka API v1.0 🚀", null);
 });
 
-
+// app.use("/users", userRoutes);
+app.use("/api/v1/first-timers", firstTimerRoutes);
 
 app.use((req, _res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl}`, 404));
+  next(new AppError(`The path ${req.method} request to ${req.originalUrl} was not found`, 404));
 });
 
 // Global error handler (should be after routes)

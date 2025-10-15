@@ -15,6 +15,13 @@
       "when": 1760535359396,
       "tag": "0001_dark_genesis",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1760543135143,
+      "tag": "0002_lyrical_stature",
+      "breakpoints": true
     }
   ]
 }
