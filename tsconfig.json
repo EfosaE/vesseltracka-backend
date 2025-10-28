@@ -40,8 +40,8 @@
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
-    
-    //     // Type safety
+
+    // Type safety
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,

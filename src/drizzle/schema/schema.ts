@@ -36,8 +36,9 @@ export const firstTimersTable = pgTable("first_timers", {
   bornAgain: boolean("born_again").notNull(),
   holyGhostBaptized: boolean("holy_ghost_baptized").notNull(),
   invitedBy: varchar("invited_by", { length: 255 }),
-  deptInterestedIn: uuid("dept_interested_in")
-    .references(() => departmentsTable.id),
+  deptInterestedIn: uuid("dept_interested_in").references(
+    () => departmentsTable.id
+  ),
   wouldLikeToJoin: boolean("would_like_to_join").notNull(),
   ...timestamps,
 });
@@ -49,14 +50,15 @@ export const departmentsTable = pgTable("departments", {
   ...timestamps,
 });
 
-
 export const membersTable = pgTable("members", {
   id: uuid().primaryKey().defaultRandom(),
-  userId: uuid("user_id").references(() => usersTable.id).unique(),
+  userId: uuid("user_id")
+    .references(() => usersTable.id)
+    .unique(),
   departmentId: uuid("department_id")
     .references(() => departmentsTable.id)
     .notNull(),
-    role: varchar({ length: 255 }).notNull(),
+  role: varchar({ length: 255 }).notNull(),
   // isAdmin: boolean("is_admin").notNull().default(false),
   ...timestamps,
 });
